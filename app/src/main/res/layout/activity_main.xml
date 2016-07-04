@@ -10,9 +10,4 @@
     tools:context="com.gmail.zubrapps.showmetheweather.MainActivity"
     android:background="#dcfeff">
 
-    <fragment android:name="com.gmail.zubrapps.showmetheweather.WeatherFragment"
-        android:id="@+id/mWeatherFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </RelativeLayout>

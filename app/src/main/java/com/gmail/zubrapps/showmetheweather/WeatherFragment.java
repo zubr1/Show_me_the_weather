@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
@@ -37,6 +38,7 @@ public class WeatherFragment extends Fragment {
     private TextView currentTemperatureField;
     private TextView weatherIcon;
     private Handler handler;
+    private Button seeForecast;
 
 
     public WeatherFragment(){
@@ -50,6 +52,15 @@ public class WeatherFragment extends Fragment {
         findLayoutItems(rootView);
         //get city list from fetch data and put it into list view
         prepareCityList();
+
+        //setup btn listener
+        seeForecast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //goes to the new view (Calendar)
+
+            }
+        });
 
         prepareSearchView();
         //prepare weather icons
@@ -115,6 +126,7 @@ public class WeatherFragment extends Fragment {
         updatedField = (TextView)rootView.findViewById(R.id.lastUpdateText);
         infoField = (TextView)rootView.findViewById(R.id.weatherInfoText);
         currentTemperatureField = (TextView)rootView.findViewById(R.id.temperatureText);
+        seeForecast = (Button)rootView.findViewById(R.id.forecastBtn);
     }
 
     private void showList(){
