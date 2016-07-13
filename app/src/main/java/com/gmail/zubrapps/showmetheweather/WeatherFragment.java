@@ -1,6 +1,7 @@
 package com.gmail.zubrapps.showmetheweather;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,12 @@ import java.util.Locale;
 
 
 public class WeatherFragment extends Fragment {
+
+    public interface WeatherFragmentListener{
+        public void goToCalendarView(boolean go);
+    }
+
+
     private static final String TAG = "SearchViewFilterMode";
 
     private ListView mCityList;
@@ -40,14 +47,43 @@ public class WeatherFragment extends Fragment {
     private Handler handler;
     private Button seeForecast;
 
+    WeatherFragmentListener mWeatherCallback;
+
 
     public WeatherFragment(){
         handler = new Handler();
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //make sure that MainActivity has implemented the callback listener
+        try {
+            mWeatherCallback = (WeatherFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement WeatherFragmentListener");
+        }
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        /*
+        String day;
+        try{
+            day = getArguments().getString("mDay");
+        }catch (NullPointerException e){
+            day = "sun";
+        }
+        */
+
+        //until forecast service is incomplete, this button should be hidden
+        seeForecast.setVisibility(View.GONE);
+
         View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
         findLayoutItems(rootView);
         //get city list from fetch data and put it into list view
@@ -57,8 +93,7 @@ public class WeatherFragment extends Fragment {
         seeForecast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //goes to the new view (Calendar)
-
+                mWeatherCallback.goToCalendarView(true);
             }
         });
 

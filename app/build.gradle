@@ -25,4 +25,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.squareup:android-times-square:1.6.5@aar'
+
+    compile 'com.survivingwithandroid:weatherlib:1.6.0'
+    compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.6.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.+'
 }

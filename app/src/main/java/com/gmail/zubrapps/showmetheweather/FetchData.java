@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.widget.Toast;
 
+import com.survivingwithandroid.weather.lib.model.DayForecast;
+import com.survivingwithandroid.weather.lib.model.WeatherForecast;
+import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProvider;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,6 +24,9 @@ import java.util.List;
 public class FetchData {
     private static final String OPEN_WEATHER_MAP_API =
             "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
+    private static final String OPEN_WEATHER_MAP_FORECAST_API =
+            "http://api.openweathermap.org/data/2.5/forecast/daily?q=%s&units=metric";
+
 
     public static List<String> getCityList(Context context, AssetManager mngr){
         List<String> data = new ArrayList<>();
@@ -84,6 +91,37 @@ public class FetchData {
         catch(Exception e){
             return null;
         }
+    }
+
+    public static DayForecast getWeatherForecast(Context context,String city, int day){
+        OpenweathermapProvider openweathermapProvider = new OpenweathermapProvider();
+        WeatherForecast mForecast;
+        DayForecast mDay = new DayForecast();
+        try {
+            URL url = new URL(String.format(OPEN_WEATHER_MAP_FORECAST_API, city));
+            HttpURLConnection connection =
+                    (HttpURLConnection)url.openConnection();
+
+            connection.addRequestProperty("x-api-key",
+                    context.getString(R.string.open_weather_maps_app_id));
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder json = new StringBuilder();
+            String tmp;
+            while((tmp=reader.readLine())!=null)
+                json.append(tmp).append("\n");
+            reader.close();
+
+            mForecast = openweathermapProvider.getForecastWeather(json.toString());
+            //get particular day
+            mDay = mForecast.getForecast(day);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mDay;
     }
 
 }
